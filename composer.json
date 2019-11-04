@@ -1,0 +1,51 @@
+{
+    "name": "bbs-lab/nova-cloudinary-field",
+    "description": "A Cloudinary Media Library field for Laravel Nova.",
+    "keywords": [
+        "laravel",
+        "nova",
+        "cloudinary",
+        "field"
+    ],
+    "homepage": "https://github.com/BBS-Lab/nova-cloudinary-field",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Lionel Blessig",
+            "email": "lionel@blessig.net",
+            "role": "Developer"
+        },
+        {
+            "name": "BBS Lab",
+            "email": "paris@big-boss-studio.com",
+            "role": "Maintainer"
+        }
+    ],
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "https://nova.laravel.com"
+        }
+    ],
+    "require": {
+        "php": ">=7.1.0",
+        "laravel/nova": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "BBSLab\\CloudinaryField\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "BBSLab\\CloudinaryField\\CloudinaryFieldServiceProvider"
+            ]
+        }
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
