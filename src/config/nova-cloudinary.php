@@ -12,7 +12,7 @@ return [
     |
     */
 
-    'cloud_name' => env('CLOUDINARY_CLOUD_NAME',''),
+    'cloud_name' => env('CLOUDINARY_CLOUD_NAME', ''),
 
     /*
     |--------------------------------------------------------------------------
@@ -25,7 +25,7 @@ return [
     |
     */
 
-    'api_key' => env('CLOUDINARY_API_KEY',''),
+    'api_key' => env('CLOUDINARY_API_KEY', ''),
 
     /*
     |--------------------------------------------------------------------------
@@ -38,7 +38,7 @@ return [
     |
     */
 
-    'api_secret' => env('CLOUDINARY_API_SECRET',''),
+    'api_secret' => env('CLOUDINARY_API_SECRET', ''),
 
     /*
     |--------------------------------------------------------------------------
@@ -49,5 +49,5 @@ return [
     |
     */
 
-    'username' => env('CLOUDINARY_USERNAME',''),
+    'username' => env('CLOUDINARY_USERNAME', ''),
 ];

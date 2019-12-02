@@ -42,7 +42,7 @@ trait HasCloudinaryField
             'string' => $string,
             'username' => $username,
             'timestamp' => $timestamp,
-            'signature' => hash('sha256',$string),
+            'signature' => hash('sha256', $string),
         ];
     }
 }
