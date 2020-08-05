@@ -83,7 +83,11 @@ export default {
         },
 
         openMediaLibrary() {
-            this.uploadWidget.show()
+          this.$cloudinaryMediaLibrary.show((data) => {
+            if (data.assets.length > 0) {
+              this.value = data.assets[0].public_id
+            }
+          })
         },
 
         resetValue() {
@@ -91,22 +95,15 @@ export default {
         }
     },
 
-    mounted() {;
-        this.uploadWidget = cloudinary.createMediaLibrary({
-                cloud_name: this.field.cloud_name,
-                api_key: this.field.api_key,
-                signature: this.field.signature,
-                username: this.field.username,
-                timestamp: this.field.timestamp,
-                multiple: false,
-            }, {
-                insertHandler: (data) => {
-                    if (data.assets.length > 0) {
-                        this.value = data.assets[0].public_id
-                    }
-                }
-            }
-        )
+    mounted() {
+      this.$cloudinaryMediaLibrary.init({
+        cloud_name: this.field.cloud_name,
+        api_key: this.field.api_key,
+        signature: this.field.signature,
+        username: this.field.username,
+        timestamp: this.field.timestamp,
+        multiple: false,
+      })
     }
 }
 </script>
