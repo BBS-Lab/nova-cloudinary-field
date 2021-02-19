@@ -23,7 +23,7 @@ class Cloudinary extends Field
      * @param  \BBSLab\CloudinaryField\mixed|null  $resolveCallback
      * @return void
      */
-    public function __construct(string $name, ?string $attribute = null, ?mixed $resolveCallback = null)
+    public function __construct($name, $attribute = null, callable $resolveCallback = null)
     {
         parent::__construct($name, $attribute, $resolveCallback);
 
