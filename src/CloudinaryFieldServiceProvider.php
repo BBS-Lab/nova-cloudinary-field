@@ -3,48 +3,57 @@
 namespace BBSLab\CloudinaryField;
 
 use Illuminate\Support\ServiceProvider;
+use Laravel\Nova\Events\ServingNova;
+use Laravel\Nova\Nova;
 
 class CloudinaryFieldServiceProvider extends ServiceProvider
 {
-    /**
-     * Bootstrap any application services.
-     *
-     * @return void
-     */
-    public function boot()
+    public function boot(): void
     {
-        if ($this->isNovaInstalled()) {
-            $this->publishes([
-                __DIR__.'/config/nova-cloudinary.php' => config_path('nova-cloudinary.php'),
-            ], 'config');
+        $this->config();
+        $this->translations();
 
-            \Laravel\Nova\Nova::serving(function (\Laravel\Nova\Events\ServingNova $event) {
-                //\Laravel\Nova\Nova::script('nova-cloudinary-field-external', 'https://media-library.cloudinary.com/global/all.js');
-                \Laravel\Nova\Nova::script('nova-cloudinary-field', __DIR__.'/../dist/js/field.js');
-                \Laravel\Nova\Nova::style('nova-cloudinary-field', __DIR__.'/../dist/css/field.css');
-            });
-        }
+        Nova::serving(function (ServingNova $event) {
+            $translations = trans('nova-cloudinary::ui');
+
+            if (!is_array($translations)) {
+                $translations = [];
+            }
+
+            $translations = array_merge(
+                trans('nova-cloudinary::ui', [], 'en'),
+                $translations
+            );
+
+            Nova::translations($translations);
+
+
+            Nova::script('cloudinary-scripts', 'https://media-library.cloudinary.com/global/all.js');
+            Nova::script('nova-cloudinary-field', __DIR__.'/../dist/js/tool.js');
+            Nova::style('nova-cloudinary-field', __DIR__.'/../dist/css/tool.css');
+        });
     }
 
-    /**
-     * Register any application services.
-     *
-     * @return void
-     */
-    public function register()
+    public function register(): void
     {
-        if ($this->isNovaInstalled()) {
-            $this->mergeConfigFrom(__DIR__.'/config/nova-cloudinary.php', 'nova-cloudinary');
-        }
+        //
     }
 
-    /**
-     * Check if Laravel Nova is installed.
-     *
-     * @return bool
-     */
-    protected function isNovaInstalled()
+    public function config(): void
     {
-        return class_exists('Laravel\Nova\Nova');
+        $this->mergeConfigFrom(__DIR__.'/../config/nova-cloudinary.php', 'nova-cloudinary');
+
+        $this->publishes(
+            [
+                __DIR__.'/../config' => config_path(),
+            ],
+            'nova-cloudinary-config'
+        );
+    }
+
+    protected function translations(): void
+    {
+        $this->loadTranslationsFrom(__DIR__.'/../lang', 'nova-cloudinary');
+        $this->loadJsonTranslationsFrom(__DIR__.'/../lang');
     }
 }
