@@ -34,12 +34,9 @@
               type="button"
               @click="openCloudinaryModal"
             >
-              <img
-                src="https://res.cloudinary.com/cloudinary-marketing/image/upload/c_scale,w_45/creative_source/Logo/Cloud%20Glyph/cloudinary_cloud_glyph_regular.svg"
-                alt=""
-                aria-hidden="true"
-                class="-ml-1 mr-2 h-5 w-5 text-gray-400 dark:text-gray-200"
-              >
+              <CloudinaryIcon
+                class="-ml-1 mr-2 h-5 w-5 text-[#3448c5] dark:text-white"
+              />
               {{ __('NovaCloudinary.openCloudinary') }}
             </button>
           </div>
@@ -48,6 +45,10 @@
     </template>
   </DefaultField>
 </template>
+
+<script setup>
+import CloudinaryIcon from '@/components/CloudinaryIcon.vue'
+</script>
 
 <script>
 import { FormField, HandlesValidationErrors } from 'laravel-nova'
