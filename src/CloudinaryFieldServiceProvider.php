@@ -1,15 +1,24 @@
 <?php
 
+declare(strict_types=1);
+
 namespace BBSLab\CloudinaryField;
 
+use BBSLab\CloudinaryField\Http\Middleware\Authorize;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Nova\Events\ServingNova;
+use Laravel\Nova\Http\Middleware\Authenticate;
 use Laravel\Nova\Nova;
 
 class CloudinaryFieldServiceProvider extends ServiceProvider
 {
     public function boot(): void
     {
+        $this->app->booted(function () {
+            $this->routes();
+        });
+
         $this->config();
         $this->translations();
 
@@ -37,6 +46,16 @@ class CloudinaryFieldServiceProvider extends ServiceProvider
     public function register(): void
     {
         //
+    }
+
+    protected function routes(): void
+    {
+        if ($this->app->routesAreCached()) {
+            return;
+        }
+
+        Nova::router(['nova', Authenticate::class, Authorize::class], 'nova-cloudinary')
+            ->group(__DIR__ . '/../routes/inertia.php');
     }
 
     public function config(): void
