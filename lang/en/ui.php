@@ -11,5 +11,5 @@ return [
     'NovaCloudinary.meta.createdAt' => 'CreatedAt',
     'NovaCloudinary.meta.type' => 'Type',
     'NovaCloudinary.openCloudinary' => 'Open Cloudinary library',
-
+    'NovaCloudinary.preview.information' => 'Information',
 ];

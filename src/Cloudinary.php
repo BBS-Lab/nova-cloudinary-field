@@ -22,6 +22,24 @@ class Cloudinary extends Field
     public ?string $secret = null;
     public ?Closure $configureCallback = null;
 
+    public bool $multiple = false;
+
+    public ?int $limit = null;
+
+    public function multiple(bool $multiple = true): static
+    {
+        $this->multiple = $multiple;
+
+        return $this;
+    }
+
+    public function limit(?int $limit = null): static
+    {
+        $this->limit = $limit;
+
+        return $this;
+    }
+
     public function cloud(string $cloud): static
     {
         $this->cloud = $cloud;
@@ -87,6 +105,8 @@ class Cloudinary extends Field
                 algo: 'sha256',
                 data: "cloud_name={$cloud}&timestamp={$timestamp}&username={$username}{$secret}",
             ),
+            'multiple' => $this->multiple,
+            'max_files' => $this->limit,
         ];
     }
 

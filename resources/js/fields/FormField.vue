@@ -54,6 +54,7 @@ import { FormField, HandlesValidationErrors } from 'laravel-nova'
 import draggable from 'vuedraggable'
 import FieldCard from '@/components/FieldCard.vue'
 import SyncWithDarkMode from '@/mixins/SyncWithDarkMode'
+import { last, takeRight } from 'lodash'
 
 export default {
   mixins: [FormField, HandlesValidationErrors, SyncWithDarkMode],
@@ -101,7 +102,17 @@ export default {
 
     openCloudinaryModal() {
       this.$cloudinaryShowWidget(this.field.widgetKey, (data) => {
+        if (this.field.configuration.multiple !== true) {
+          this.value = [last(data.assets || [])]
+
+          return
+        }
+
         this.value = this.value.concat(data.assets || [])
+
+        if (this.field.configuration.max_files && this.value.length > this.field.configuration.max_files) {
+          this.value = takeRight(this.value, this.field.configuration.max_files)
+        }
       })
     },
 
