@@ -7,7 +7,7 @@
   >
     <template #field>
       <div class="nova-cloudinary">
-        <div>
+        <div :class="{ dark }">
           <div v-if="value?.length > 0" class="flex flex-row gap-2 flex-wrap w-full">
             <draggable
               v-model="value"
@@ -53,9 +53,10 @@
 import { FormField, HandlesValidationErrors } from 'laravel-nova'
 import draggable from 'vuedraggable'
 import FieldCard from '@/components/FieldCard.vue'
+import SyncWithDarkMode from '@/mixins/SyncWithDarkMode'
 
 export default {
-  mixins: [FormField, HandlesValidationErrors],
+  mixins: [FormField, HandlesValidationErrors, SyncWithDarkMode],
 
   components: {
     FieldCard,

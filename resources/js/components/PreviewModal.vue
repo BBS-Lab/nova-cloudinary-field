@@ -45,7 +45,7 @@
           class="block relative w-full md:w-4/6 overflow-hidden rounded-lg bg-gray-500/10 flex items-center justify-center"
         >
           <img
-            v-if="file?.resource_type === 'image'"
+            v-if="file?.resource_type === 'image' && file?.format !== 'pdf'"
             :src="file.secure_url"
             class="relative max-h-[80vh]"
           />
@@ -60,7 +60,7 @@
           </video>
 
           <embed
-            v-else-if="file?.resource_type === 'pdf'"
+            v-else-if="file?.format === 'pdf'"
             :src="file?.secure_url"
             type="application/pdf"
             class="w-full max-w-screen h-[80vh]"

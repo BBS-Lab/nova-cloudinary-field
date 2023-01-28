@@ -12,7 +12,7 @@
       >
         <div class="fixed inset-0 bg-gray-800/20 backdrop-blur-sm transition-opacity" />
       </TransitionChild>
-      <div class="fixed z-10 inset-0 overflow-y-auto">
+      <div :class="{ dark }" class="fixed z-10 inset-0 overflow-y-auto">
         <div class="flex items-end sm:items-center justify-center min-h-full p-0 md:p-4">
           <TransitionChild
             as="template"
@@ -23,7 +23,7 @@
             leave-from="opacity-100 translate-y-0 sm:scale-100"
             leave-to="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
           >
-            <slot :close="closeModal" :is-open="isOpen"></slot>
+            <slot :close="closeModal" :is-open="isOpen" :dark="dark"></slot>
           </TransitionChild>
         </div>
       </div>
@@ -33,7 +33,8 @@
 
 <script setup>
 import { Dialog, TransitionChild, TransitionRoot } from '@headlessui/vue'
-import { onBeforeUnmount } from 'vue'
+import { onBeforeUnmount, onMounted } from 'vue'
+import { syncWithDarkMode } from '@/hooks'
 
 const props = defineProps({
   name: {
@@ -50,7 +51,15 @@ const props = defineProps({
   }
 })
 
+const { dark, unregisterEvent } = syncWithDarkMode()
+
+onMounted(() => {
+  console.log({dark: dark.value})
+})
+
 onBeforeUnmount(() => {
+  unregisterEvent()
+
   if (props.isOpen) {
     closeModal()
   }
