@@ -31,7 +31,7 @@
         </template>
         <div
           v-if="rest > 0"
-          class="relative z-40 inline-block h-10 w-10 rounded-full ring-white dark:ring-gray-500 ring-1 bg-gray-100 flex items-center justify-center shadow"
+          class="relative z-40 inline-block h-10 w-10 rounded-full ring-white dark:ring-gray-500 ring-1 bg-gray-50 dark:bg-gray-900 dark:text-gray-400 flex items-center justify-center shadow"
         >
           +{{ rest }}
         </div>
