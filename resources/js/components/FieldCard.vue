@@ -13,13 +13,13 @@
       <div class="m-auto z-20 flex h-full items-center justify-center select-none">
         <div
           class="m-auto flex h-full w-full items-center justify-center bg-gray-50 dark:bg-gray-900 text-gray-600"
-          v-if="isFile"
+          v-if="isFile || isPdf"
         >
           <DocumentIcon class="w-16 h-16" />
         </div>
 
         <img
-          v-if="isImage"
+          v-if="isImage && !isPdf"
           :src="file.secure_url"
           draggable="false"
         />
@@ -84,6 +84,7 @@ const props = defineProps({
 
 const isImage = computed(() => props.file.resource_type === 'image')
 const isVideo = computed(() => props.file.resource_type === 'video')
+const isPdf = computed(() => props.file.format === 'pdf')
 const isFile = computed(() => props.file.resource_type !== 'image' && props.file.resource_type !== 'video')
 const name = computed(() => props.file.public_id)
 </script>

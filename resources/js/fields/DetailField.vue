@@ -31,13 +31,18 @@
 import { CopiesToClipboard } from 'laravel-nova'
 import FieldCard from '@/components/FieldCard.vue'
 import PreviewModal from '@/components/PreviewModal.vue'
+import SyncWithDarkMode from '@/mixins/SyncWithDarkMode'
 
 export default {
-  mixins: [CopiesToClipboard],
+  mixins: [CopiesToClipboard, SyncWithDarkMode],
 
   components: {
     FieldCard,
     PreviewModal,
+  },
+
+  mounted() {
+    console.log(this.field.value)
   },
 
   props: ['resource', 'resourceName', 'resourceId', 'field'],
