@@ -69,7 +69,7 @@ import {
   PlayIcon,
   XCircleIcon,
 } from '@heroicons/vue/24/solid'
-import Asset from '@/Types/Asset'
+import Asset from '@/types/Asset'
 import { filesize } from 'filesize'
 
 const props = defineProps({

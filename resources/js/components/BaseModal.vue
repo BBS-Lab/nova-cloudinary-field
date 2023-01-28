@@ -53,16 +53,19 @@ const props = defineProps({
 
 const { dark, unregisterEvent } = syncWithDarkMode()
 
-onMounted(() => {
-  console.log({dark: dark.value})
-})
-
 onBeforeUnmount(() => {
   unregisterEvent()
 
   if (props.isOpen) {
     closeModal()
   }
+
+  setTimeout(() => {
+    // temporary fix
+    // @see https://github.com/tailwindlabs/headlessui/issues/1319
+    document.documentElement.style.removeProperty('overflow')
+    document.documentElement.style.removeProperty('padding-right')
+  }, 100)
 })
 
 

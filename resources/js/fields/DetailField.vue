@@ -41,10 +41,6 @@ export default {
     PreviewModal,
   },
 
-  mounted() {
-    console.log(this.field.value)
-  },
-
   props: ['resource', 'resourceName', 'resourceId', 'field'],
 
   data: () => ({
