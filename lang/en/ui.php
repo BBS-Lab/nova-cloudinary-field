@@ -12,4 +12,5 @@ return [
     'NovaCloudinary.meta.type' => 'Type',
     'NovaCloudinary.openCloudinary' => 'Open Cloudinary library',
     'NovaCloudinary.preview.information' => 'Information',
+    'NovaCloudinary.title' => 'Cloudinary media library',
 ];
