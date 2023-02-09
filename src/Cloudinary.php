@@ -49,7 +49,7 @@ class Cloudinary extends Field implements InteractsWithCloudinaryContract
         ]);
     }
 
-    protected function fillAttribute(NovaRequest $request, $requestAttribute, $model, $attribute)
+    protected function fillAttributeFromRequest(NovaRequest $request, $requestAttribute, $model, $attribute)
     {
         $value = $request->input($requestAttribute);
 
