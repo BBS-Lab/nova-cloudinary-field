@@ -1,7 +1,7 @@
 <template>
   <DefaultField
     :errors="errors"
-    :field="field"
+    :field="currentField"
     :full-width-content="fullWidthContent"
     :show-help-text="showHelpText"
   >
@@ -51,14 +51,14 @@ import CloudinaryIcon from '@/components/CloudinaryIcon.vue'
 </script>
 
 <script>
-import { FormField, HandlesValidationErrors } from 'laravel-nova'
+import { DependentFormField, HandlesValidationErrors } from 'laravel-nova'
 import draggable from 'vuedraggable'
 import FieldCard from '@/components/FieldCard.vue'
 import SyncWithDarkMode from '@/mixins/SyncWithDarkMode'
 import { last, takeRight } from 'lodash'
 
 export default {
-  mixins: [FormField, HandlesValidationErrors, SyncWithDarkMode],
+  mixins: [DependentFormField, HandlesValidationErrors, SyncWithDarkMode],
 
   components: {
     FieldCard,
@@ -74,7 +74,7 @@ export default {
   }),
 
   mounted() {
-    this.$cloudinaryInitWidget(this.field.widgetKey, this.field.configuration)
+    this.$cloudinaryInitWidget(this.currentField.widgetKey, this.currentField.configuration)
   },
 
   computed: {
@@ -88,22 +88,26 @@ export default {
   },
 
   methods: {
+    onSyncedField() {
+      this.$cloudinaryInitWidget(this.currentField.widgetKey, this.currentField.configuration)
+    },
+
     setInitialValue() {
-      this.value = this.field.value || []
+      this.value = this.currentField.value || []
     },
 
     fill(formData) {
       if (this.value?.length) {
         formData.append(
-          this.field.attribute,
+          this.currentField.attribute,
           JSON.stringify(this.value)
         )
       }
     },
 
     openCloudinaryModal() {
-      this.$cloudinaryShowWidget(this.field.widgetKey, (data) => {
-        if (this.field.configuration.multiple !== true) {
+      this.$cloudinaryShowWidget(this.currentField.widgetKey, (data) => {
+        if (this.currentField.configuration.multiple !== true) {
           this.value = [last(data.assets || [])]
 
           return
@@ -111,8 +115,8 @@ export default {
 
         this.value = this.value.concat(data.assets || [])
 
-        if (this.field.configuration.max_files && this.value.length > this.field.configuration.max_files) {
-          this.value = takeRight(this.value, this.field.configuration.max_files)
+        if (this.currentField.configuration.max_files && this.value.length > this.currentField.configuration.max_files) {
+          this.value = takeRight(this.value, this.currentField.configuration.max_files)
         }
       })
     },

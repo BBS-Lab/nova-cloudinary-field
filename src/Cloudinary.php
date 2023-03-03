@@ -8,10 +8,12 @@ use BBSLab\CloudinaryField\Contracts\Support\InteractsWithCloudinary as Interact
 use BBSLab\CloudinaryField\Traits\Support\InteractsWithCloudinary;
 use JsonException;
 use Laravel\Nova\Fields\Field;
+use Laravel\Nova\Fields\SupportsDependentFields;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
 class Cloudinary extends Field implements InteractsWithCloudinaryContract
 {
+    use SupportsDependentFields;
     use InteractsWithCloudinary {
         InteractsWithCloudinary::configuration as baseConfiguration;
     }
