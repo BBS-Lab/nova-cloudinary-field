@@ -13,4 +13,7 @@ return [
     'NovaCloudinary.openCloudinary' => 'Open Cloudinary library',
     'NovaCloudinary.preview.information' => 'Information',
     'NovaCloudinary.title' => 'Cloudinary media library',
+    'NovaCloudinary.actions.copy' => 'Copy',
+    'NovaCloudinary.actions.download' => 'Download',
+    'NovaCloudinary.actions.close' => 'Close',
 ];

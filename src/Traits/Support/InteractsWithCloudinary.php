@@ -10,9 +10,13 @@ use Laravel\Nova\Http\Requests\NovaRequest;
 trait InteractsWithCloudinary
 {
     public ?string $cloud = null;
+
     public ?string $username = null;
+
     public ?string $key = null;
+
     public ?string $secret = null;
+
     public ?Closure $configureCallback = null;
 
     public function cloud(string $cloud): static

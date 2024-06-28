@@ -16,7 +16,7 @@ class NovaCloudinary extends Tool implements InteractsWithCloudinaryContract
 
     public function menu(Request $request): mixed
     {
-        return MenuSection::make('Cloudinary media library')
+        return MenuSection::make(trans('nova-cloudinary::ui.NovaCloudinary.title'))
             ->path('/nova-cloudinary')
             ->icon('cloud');
     }
