@@ -2,18 +2,21 @@
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/bbs-lab/nova-cloudinary-field.svg?style=flat-square)](https://packagist.org/packages/bbs-lab/nova-cloudinary-field)
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE.md)
-[![Build Status](https://img.shields.io/travis/bbs-lab/nova-cloudinary-field/master.svg?style=flat-square)](https://travis-ci.org/bbs-lab/nova-cloudinary-field)
-[![StyleCI](https://styleci.io/repos/217854455/shield)](https://styleci.io/repos/217854455)
-[![Quality Score](https://img.shields.io/scrutinizer/g/bbs-lab/nova-cloudinary-field.svg?style=flat-square)](https://scrutinizer-ci.com/g/bbs-lab/nova-cloudinary-field)
-[![Code Coverage](https://img.shields.io/scrutinizer/coverage/g/bbs-lab/nova-cloudinary-field/master.svg?style=flat-square)](https://scrutinizer-ci.com/g/bbs-lab/nova-cloudinary-field/?branch=master)
 [![Total Downloads](https://img.shields.io/packagist/dt/bbs-lab/nova-cloudinary-field.svg?style=flat-square)](https://packagist.org/packages/bbs-lab/nova-cloudinary-field)
 
-A Cloudinary Media Library field for Laravel Nova.
+A Cloudinary Media Library field and tool for Laravel Nova.
+
+![cloudinary editor field screenshot](screenshots/screenshot_create_view.png)
 
 ## Contents
 
 - [Installation](#installation)
 - [Usage](#usage)
+- [Advanced usage](#advanced-usage)
+    - [Multiple selection](#multiple-selection)
+    - [Limit the number of selected files](#limit-the-number-of-selected-files)
+    - [On-demand configuration](#on-demand-configuration)
+    - [Dependent Fields](#dependent-fields)
 - [Screenshots](#screenshots)
     - [List view](#list-view)
     - [Detail view](#detail-view)
@@ -45,59 +48,19 @@ This is the contents of the published config file:
 ```php
 <?php
 
+declare(strict_types=1);
+
 return [
-    /*
-    |--------------------------------------------------------------------------
-    | Cloud Name
-    |--------------------------------------------------------------------------
-    |
-    | This is the name of your Cloudinary cloud name
-    | It can commonly be found on the upper left part of the Cloudinary
-    | dashboard.
-    |
-    */
 
-    'cloud_name' => env('CLOUDINARY_CLOUD_NAME',''),
+    'default' => [
+        'cloud' => env('NOVA_CLOUDINARY_DEFAULT_CLOUD'),
+        'username' => env('NOVA_CLOUDINARY_DEFAULT_USERNAME'),
+        'key' => env('NOVA_CLOUDINARY_DEFAULT_KEY'),
+        'secret' => env('NOVA_CLOUDINARY_DEFAULT_SECRET'),
+    ],
 
-    /*
-    |--------------------------------------------------------------------------
-    | API Key
-    |--------------------------------------------------------------------------
-    |
-    | This is your public Cloudinary API key
-    | It can commonly be found on the upper left part of the Cloudinary
-    | dashboard.
-    |
-    */
-
-    'api_key' => env('CLOUDINARY_API_KEY',''),
-
-    /*
-    |--------------------------------------------------------------------------
-    | API Secret
-    |--------------------------------------------------------------------------
-    |
-    | This is your secret Cloudinary key
-    | It can commonly be found on the upper left part of the Cloudinary
-    | dashboard (remember to click on "Reveal")
-    |
-    */
-
-    'api_secret' => env('CLOUDINARY_API_SECRET',''),
-
-    /*
-    |--------------------------------------------------------------------------
-    | Cloudinary Username
-    |--------------------------------------------------------------------------
-    |
-    | This is the email address of the Cloudinary account you want to use.
-    |
-    */
-
-    'username' => env('CLOUDINARY_USERNAME',''),
 ];
 ```
-
 
 ## Usage
 
@@ -108,7 +71,9 @@ You can use the `BBSLab\CloudinaryField\Cloudinary` field in your Nova resource:
 
 namespace App\Nova;
 
-use BBSLab\CloudinaryField\Cloudinary;
+declare(strict_types=1);
+
+namespace App\Nova;
 
 class BlogPost extends Resource
 {
@@ -128,23 +93,230 @@ class BlogPost extends Resource
 }
 ```
 
+> [!IMPORTANT]
+> By default the field stores an array of data, you **must** cast your attribute as an `array`.
+
+
+
+## Advanced usage
+
+### Multiple selection
+
+When using the `Cloudinary` field on your Nova resource, you can tell the tool to allow multiple selection for your attribute.
+
+By default, the tool will only allow single selection.
+
+```php
+<?php
+
+declare(strict_types=1);
+
+namespace App\Nova;
+
+use BBSLab\CloudinaryField\Cloudinary;
+
+class BlogPost extends Resource
+{
+    // ...
+    
+    public function fields(Request $request)
+    {
+        return [
+            // ...
+
+            Cloudinary::make('Image')
+                ->multiple(),
+
+            // ...
+        ];
+    }
+    
+}
+```
+
+### Limit the number of selected files
+
+You can limit the number of selected files by using the `limit` method.
+
+```php
+<?php
+
+declare(strict_types=1);
+
+namespace App\Nova;
+
+use BBSLab\CloudinaryField\Cloudinary;
+
+class BlogPost extends Resource
+{
+    // ...
+    
+    public function fields(Request $request)
+    {
+        return [
+            // ...
+
+            Cloudinary::make('Image')
+                ->multiple()
+                ->limit(10),
+
+            // ...
+        ];
+    }
+    
+}
+```
+
+### On-demand configuration
+
+You can use the following methods to set some configuration on the field:
+
+- `cloud(string $cloud)`: Set the cloud name.
+- `username(string $username)`: Set the username.
+- `key(string $key)`: Set the API key.
+- `secret(string $secret)`: Set the API secret.
+
+Also, you can use the `configureUsing` method to set the configuration on the field:
+
+```php
+<?php
+
+declare(strict_types=1);
+
+namespace App\Nova;
+
+use BBSLab\CloudinaryField\Cloudinary;use Laravel\Nova\Http\Requests\NovaRequest;
+
+class BlogPost extends Resource
+{
+    // ...
+    
+    public function fields(Request $request)
+    {
+        return [
+            // ...
+
+            Cloudinary::make('Image')
+                ->configureUsing(function (NovaRequest $request) {
+                    return [
+                        'cloud' => 'my_cloud',
+                        'username' => 'my_username',
+                        'key' => 'my_key',
+                        'secret' => 'my_secret',
+                    ];
+                });
+
+            // ...
+        ];
+    }
+    
+}
+```
+
+### Dependent Fields
+
+You may use the `dependsOn` method to conditionally display the field based on the value of another field. See the example below:
+
+```php
+<?php
+
+declare(strict_types=1);
+
+namespace App\Nova;
+
+use BBSLab\CloudinaryField\Cloudinary;
+use Laravel\Nova\Fields\Boolean;
+use Laravel\Nova\Fields\FormData;
+use Laravel\Nova\Fields\ID;
+use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Http\Requests\NovaRequest;
+
+class BlogPost extends Resource
+{
+    // ...
+
+    public function fields(NovaRequest $request): array
+    {
+        return [
+            ID::make()->sortable(),
+
+            Text::make('Title')
+                ->sortable()
+                ->rules('required', 'max:255'),
+
+            Boolean::make('Has Image')
+                ->sortable()
+                ->rules('required'),
+
+            Cloudinary::make('Image')
+                ->rules('nullable')
+                ->fullWidth()
+                ->hide()
+                ->dependsOn('has_image', function (Cloudinary $field, NovaRequest $request, FormData $formData) {
+                    if ($formData->has_content) {
+                        $field
+                            ->show()
+                            ->rules('required');
+                    } else {
+                        $field->hide();
+                    }
+                }),
+        ];
+    }
+}
+```
+
+> [!TIP]
+> More information about dependent fields can be found in the [official documentation](https://nova.laravel.com/docs/resources/fields.html#dependent-fields).
+
+## Tool
+
+The package also provides a tool to directly access the Cloudinary Media Library.
+
+You may register the tool in your `NovaServiceProvider`:
+
+```php
+<?php
+
+declare(strict_types=1);
+
+namespace App\Providers;
+
+use BBSLab\CloudinaryField\NovaCloudinary;
+use Laravel\Nova\NovaApplicationServiceProvider;
+
+class NovaServiceProvider extends NovaApplicationServiceProvider
+{
+    // ...
+
+    public function tools(): array
+    {
+        return [
+            NovaCloudinary::make(),
+        ];
+    }
+}
+
+```
+
 ## Screenshots
 
-### List view
+### Index
 
-![List view](screenshots/screenshot_list.png?raw=true "How image appears on list view")
+![Index view](screenshots/screenshot_index_view.png)
 
-### Detail view
+### Detail
 
-![Detail view](screenshots/screenshot_detail.png?raw=true "How image appears on detail view")
+![Detail view](screenshots/screenshot_detail_view.png)
 
-### Form view
+### Form
 
-Form view - Nothing selected
-![Form view - Nothing selected](screenshots/screenshot_edit_novalue.png?raw=true "How image appears on form view with no picture selected")
+![Create view](screenshots/screenshot_create_view.png)
+![Modal view](screenshots/screenshot_field_modal.png)
+![Edit view](screenshots/screenshot_edit_view.png)
 
-Form view - Picture selected
-![Form view - Picture selected](screenshots/screenshot_edit_selected.png?raw=true "How image appears on form view with picture selected")
+### Tool
+![Tool](screenshots/screenshot_tool_view.png)
 
 ## Changelog
 
@@ -160,7 +332,7 @@ Please see [CONTRIBUTING](CONTRIBUTING.md) for details.
 
 ## Credits
 
-- [Lionel Blessig](https://github.com/wasitum)
+- [Mikaël Popowicz](https://github.com/mikaelpopowicz)
 - [All Contributors](../../contributors)
 
 ## License

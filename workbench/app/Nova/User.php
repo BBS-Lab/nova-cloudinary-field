@@ -27,6 +27,7 @@ class User extends Resource
             ID::make()->sortable(),
 
             Cloudinary::make('Image')
+                ->multiple()
                 ->nullable(),
 
             Cloudinary::make('Flat image')
