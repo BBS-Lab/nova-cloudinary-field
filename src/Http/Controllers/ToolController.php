@@ -17,7 +17,7 @@ class ToolController extends Controller
     public function __invoke(NovaRequest $request): Response
     {
         /** @var ?\BBSLab\CloudinaryField\NovaCloudinary $tool */
-        $tool = collect(Nova::registeredTools())->first(fn(Tool $tool) => $tool instanceof NovaCloudinary);
+        $tool = collect(Nova::registeredTools())->first(fn (Tool $tool) => $tool instanceof NovaCloudinary);
 
         return Inertia::render('NovaCloudinary', [
             'configuration' => $tool?->configuration(),

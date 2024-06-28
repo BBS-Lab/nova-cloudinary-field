@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 namespace BBSLab\CloudinaryField\Contracts\Support;
+
 use Closure;
 
 interface InteractsWithCloudinary
