@@ -56,7 +56,7 @@ trait InteractsWithCloudinary
 
     protected function resolveConfiguration(NovaRequest $request): void
     {
-        if (!$this->configureCallback || !is_callable($this->configureCallback)) {
+        if (!is_callable($this->configureCallback)) {
             return;
         }
 
