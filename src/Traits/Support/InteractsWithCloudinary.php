@@ -79,11 +79,6 @@ trait InteractsWithCloudinary
             'cloud_name' => $cloud,
             'api_key' => $this->key ?? config('nova-cloudinary.default.key'),
             'username' => $username,
-            'timestamp' => $timestamp,
-            'signature' => hash(
-                algo: 'sha256',
-                data: "cloud_name={$cloud}&timestamp={$timestamp}&username={$username}{$secret}",
-            ),
         ];
     }
 }
