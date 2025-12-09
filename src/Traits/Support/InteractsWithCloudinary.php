@@ -71,14 +71,10 @@ trait InteractsWithCloudinary
     public function configuration(): array
     {
         $cloud = $this->cloud ?? config('nova-cloudinary.default.cloud');
-        $username = $this->username ?? config('nova-cloudinary.default.username');
-        $secret = $this->secret ?? config('nova-cloudinary.default.secret');
-        $timestamp = now()->timestamp;
 
         return [
             'cloud_name' => $cloud,
             'api_key' => $this->key ?? config('nova-cloudinary.default.key'),
-            'username' => $username,
         ];
     }
 }
